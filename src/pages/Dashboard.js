@@ -13,8 +13,11 @@ const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(fetchProfile());
-  }, [dispatch]);
+    dispatch(fetchProfile()).unwrap().catch(() => {
+      dispatch(logoutUser());
+      navigate("/");
+    });
+  }, [dispatch, navigate]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
